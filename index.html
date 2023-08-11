@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="resources/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="resources/css/quries.css">
+  <script src="https://kit.fontawesome.com/7ee32e7e22.js" crossorigin="anonymous"></script>
+  <script src="https://apis.google.com/js/platform.js"></script>
+
+  <title>GPA Calculator</title>
+    <style>
+        /*-----------------------------/
+----- general -----
+------------------------------*/
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-size: 16px;
+    font-weight: 300;
+    font-family: 'verdana', 'Arial', sans-serif;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+.row {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+.rowself {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x) * -.5);
+  margin-left: calc(var(--bs-gutter-x) * -.5);
+}
+/*-----------------------------/
+----- HEAD -----
+------------------------------*/
+
+header {
+    background-image: linear-gradient(rgba(85, 84, 84, 0.45), rgba(85, 84, 84, 0.45)), url(https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzhWxijSAQgPy-zXXTQbowa5-pDFXgU29oLeNL_ZDdfzkDXbfJEXCIRemtTCcSmWTufmHnF3V5NACSHYPAovbF2PoARVRVABA9js-rYXMPrd0YJARymyOGJSqMBuwDVVhjSmlnCsnasd-8wUSaJu36DND55R1i-Z1FPcEE_4XCeUOCgcTAlQPkAz8g/s900/header-back.png);
+    background-position: top;
+    background-size: cover;
+    padding: 30px 0;
+    background-attachment: fixed;
+}
+
+.head {
+    text-align: center;
+}
+
+h1 {
+    font-size: 240%;
+    color: #1ade58;
+    text-transform: uppercase;
+}
+
+.help {
+    padding: 40px 0;
+}
+
+.head p {
+    font-size: 160%;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.sub-name,
+.sub-mar,
+.sub-credit {
+    border: 1px solid #b6b5b3;
+    background-color: #fff;
+    padding: 12px 15px;
+    border-radius: 5px;
+    transition: border 0.3s;
+    color: inherit;
+    font-family: inherit;
+    margin: 10px 0;
+}
+
+.sub-name:focus,
+.sub-mar:focus,
+.sub-credit:focus {
+    border: 1px solid  #1ade58;
+}
+
+.sub-mar,
+.sub-credit {
+    width: 75px;
+}
+
+.sub-name {
+    width: 220px;
+}
+
+.sub-add {
+    padding: 12px 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid#1ade58;
+    background-color:#1ade58;
+    border-radius: 5px;
+    transition: background-color .4s, color .4s;
+    width: fit-content;
+}
+
+.sub-add:hover {
+    background-color: #fff;
+    color:#1ade58;
+}
+
+
+/*-----------------------------/
+----- Details -----
+------------------------------*/
+
+.details {
+    /* background-color: rgb(224, 224, 224); */
+    text-align: center;
+    padding: 30px;
+    min-height: 160px;
+}
+
+h2 {
+    font-size: 180%;
+    color:#1ade58;
+    padding: 15px 0;
+    text-transform: uppercase;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.subject-head {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.subject {
+    border-bottom: 1px solid #e7e7e7;
+    padding: 20px
+}
+
+.subject:first-child {
+    border-top: 1px solid #e7e7e7;
+}
+
+.subject:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+.right {
+    float: right;
+}
+
+.sub-name-des {
+    float: left;
+    text-transform: uppercase;
+}
+
+.cred {
+    margin-right: 40px;
+    color:#1ade58;
+}
+
+
+/*-----------------------------/
+----- Caculate -----
+------------------------------*/
+
+.calculate {
+    text-align: center;
+    padding: 30px 0;
+    background-color: #f8f6f6;
+    min-height: 200px;
+}
+
+.calculate-btn:active,
+.calculate-btn:visited,
+.calculate-btn,
+.reset-btn {
+    padding: 15px 20px;
+    font-size: 150%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 25px;
+    transition: background-color .4s, color .4s;
+}
+
+.calculate-btn {
+    border: 2px solid#1ade58;
+    background-color:#1ade58;
+}
+
+.reset-btn {
+    border: 2px solid #ff1100;
+    background-color: #ff1100;
+}
+
+.calculate-btn:hover {
+    background-color: #fff;
+    color:#1ade58;
+}
+
+.reset-btn:hover {
+    background-color: #fff;
+    color: #ff1100;
+}
+
+.total-gpa {
+    font-size: 200%;
+    font-weight: 700;
+    color:#1ade58;
+    background-color: #000;
+    width: 120px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+footer {
+    background-color: rgba(155, 155, 155, 0.589);
+    text-align: center;
+    padding: 20px 0;
+}
+
+.share-line {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 90%;
+}
+
+.icons-div a {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 200%;
+}
+
+.mail-ico,
+.fb-ico,
+.wtsap-ico,
+.question a {
+    transition: color .4s;
+}
+
+.fb-ico {
+    color: #e10202;
+}
+
+.wtsap-ico {
+    color: rgb(48, 122, 57);
+}
+
+.mail-ico {
+    color: #e04006;
+}
+
+.mail-ico:hover,
+.fb-ico:hover,
+.wtsap-ico:hover,
+.question a:hover {
+    color: #fff;
+}
+
+.info {
+    position: relative;
+}
+
+.question {
+    float: right;
+    margin-left: -90px;
+}
+
+.question a {
+    color: #1ade58;
+    font-size: 280%;
+}
+
+
+/*-----------------------------/
+----- Info page -----
+------------------------------*/
+
+.info {
+    padding: 30px 0;
+}
+
+.formula-before {
+    padding: 20px;
+    color: #666;
+}
+
+.formula {
+    font-weight: 800;
+    padding: 15px 0;
+}
+
+.note-message {
+    color: #ff1100;
+    font-weight: 800;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+
+/*-----------------------------/
+----- Quries -----
+------------------------------*/
+
+@media only screen and (max-width:468px) {
+    .sub-add {
+        width: 380px;
+        margin: 5px 10px;
+    }
+}
+
+@media only screen and (max-width:394px) {
+    .sub-add,
+    .sub-name {
+        width: 320px;
+        margin: 5px 10px;
+    }
+    .sub-mar,
+    .sub-credit {
+        width: 146px;
+        margin: 5px 10px;
+    }
+}
+
+@media only screen and (max-width:349px) {
+    .sub-mar,
+    .sub-credit,
+    .sub-name,
+    .sub-add {
+        width: 260px;
+        margin: 5px 10px;
+    }
+}
+
+/*-----------------------------/
+-----For Quries -----
+------------------------------*/
+
+
+/* @media only screen and (max-width:465px) {
+    .sub-add {
+        min-width: 300px;
+    }
+} */
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="row head">
+            <h1>GPA CALCULATOR</h1>
+            <p>Enter your marks</p>
+            <div>
+                <input type="text" class="sub-name" placeholder="Subject Name">
+                <input type="text" class="sub-credit" placeholder="Credit Hrs">
+                <input type="text" class="sub-mar" placeholder="Marks">
+                <button class="sub-add">Add</button>
+            </div>
+        </div>
+    </header>
+    <section class="details">
+        <div class="row">
+            <h2>TOTAL SUBJECTS</h2>
+            <div class="subject-head">
+                <!-- <div class="subject clearfix" id="item-0">
+                    <div class="sub-name-des">English</div>
+                    <div class="right">80</div>
+                    <div class="right cred">3</div>
+                </div>
+                <div class="subject clearfix" id="item-1">
+                    <div class="sub-name-des">Urdu</div>
+                    <div class="right">95</div>
+                    <div class="right cred">4</div>
+                </div>-->
+            </div>
+        </div>
+<!--Please Do not copy or reupload this anywhre--->
+    </section>
+    <section class="calculate">
+        <div class="row">
+            <div>
+                <button class="calculate-btn">Result</button>
+                <button class="reset-btn">Reset</button>
+            </div>
+            <div class="result-area">
+                <!-- <h2>YOUR GPA IS</h2>
+                <p class="total-gpa">3.5</p> -->
+          </div>
+          <br >
+          <div style="width:100%;"><a href="https://www.buymeacoffee.com/myaseenkhan0"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=myaseenkhan0&button_colour=FF5F5F&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a></div>
+          <br >
+          <div style="width:100%;position:ceter;"><iframe src="https://giphy.com/embed/hXMGQqJFlIQMOjpsKC" width="100%"  style="position:relative" frameBorder="0" class="giphy-embed"></iframe></div>
+          <br >
+          
+ <!--youtube button---> Subscribe My Youtube Channel&nbsp;<script src="https://apis.google.com/js/platform.js"></script>
+
+<div class="g-ytsubscribe" data-channelid="UCBFELTQMit0WBGxkPl0xJ0g" data-layout="full" data-count="default"></div><!---end of subscribe btn--->
+          <br >
+         <br >
+          &nbsp;&nbsp;&nbsp;Want to calculate your CGPA!
+          <a href="https://cgpa-cal.blogspot.com" target="_blank" style="text-decoration:none; color:rgb(5, 158, 209);">&nbsp;&nbsp;&nbsp;CLICK HERE</a>
+         OR Click This Button
+          <a href="https://cgpa-cal.blogspot.com/?m=o" target="_blank"><button class="calculate-btn">CGPA</button></a>
+          
+         </div>
+    </section>
+  <!---GPA Definition?--->
+  <div class="row">
+  
+ <!--Please Do not copy or reupload this anywhre --->
+    <h4>Number of classes in a week of a particular subject</h4>
+  <br > <h4>Your marks should be out of 100(less than 100)</h4>
+    <br >
+  <h3>What is GPA?</h3>
+    <br >
+    <p>GPA is an abbreviation for "grade point average," which is typically calculated by adding all the numbered grades you've received and dividing them by the number of credits you've taken. In high school, it's simply a matter of tallying your grades and dividing that total by the number of classes. GPA is usually given on a scale from 0 (an F) to 4.0 (an A), though sometimes it goes higher than that, accounting for a grade of A+.</p>
+    <p>Your GPA is the average of all the grades you've gotten in school. If you have a GPA of 4.0, it means you've earned all As in your classes.</p>
+    
+  <br >
+  <h3>What is a Credit Hour?</h3>
+  <br >
+  <p>
+A credit hour is a way of measuring how much credit a student receives for attending a course which corresponds to the hours per week spent in that course. Unlike many traditional high school courses that require students to attend class every day, college courses may only meet two or three times per week. Every hour that a student spends in the class typically corresponds to a credit hour. For example, if a student enrolls in a class that meets for one hour on Monday, Wednesday, and Friday, that course would be worth three credit hours, which is common of many college courses.
+  </p>
+  </div>
+  <br>
+  My Tech Channel
+  <div class="row">
+  <!--testing Div For Button--->
+    <script src="https://apis.google.com/js/platform.js"></script>
+
+<div class="g-ytsubscribe" data-channelid="UCdMdcqWlnNId6PNosRlF8qg" data-layout="full" data-count="default"></div>
+  </div>
+  <br>
+  <br >
+  <div class="row">
+    <h4>Feeling boring!</h4>
+    <a href="https://pogrammer-jokes.blogspot.com" target="_blank"><button style="background-color: yellow; color: black; border-radius: 10px; padding: 10px 20px; cursor:pointer;">Click Here!</button></a>
+      <h4>To Access some random jokes</h4>
+  </div>
+ <br >
+  <hr >
+  <!---1st picture-->
+   <div class="rowself">
+  <div class="col-md">
+    <!--Please Do not copy or reupload this anywhre --->
+    <h3>Click Here</h3>
+    <!---https://ckk.ai/ielts--->
+  <a href="#">
+    <img style="width:200px; height:300px;" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQF6ENTHROxdN5Xd0pp6dQfNsArBe9dsfTDQXvb9kd9OD4FJ3JFsdLGwFQSlzNNWKRx4sq7ccU4XCc7-XzMgX8qN8lmKyBV21L9QaP2p-ZIclST0Tov_pVvdHp4dMGSF2WkqUtlIDvkRgTSjzcZN1K8LKzEvofTB3nEAcLONODF7poVxB2KkatOrbhkg/s400/Blue%20and%20Orange%20Modern%20Discount%20English%20Course%20Instagram%20Post.png">
+    </a> </div>
+  <!---2nd picture-->
+  <div class="col-md">
+   <h3>Click Here</h3> <!---https://ckk.ai/Km3rI91--->
+  <a href="#">
+    <img style="width:300px; height:300px;" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgV3jY7MVn7NZJp0WQvk69HpqqIIL3OlfT7G981uNdxPo-vkuMZ63l4iS4cJmI1m2RPS7ZYVFAaTRBchp68Yl9nU3VHaIsm4orqFZh-yO7A-XsknPx0wCOtU7-yUisQH1lazvqadWf54Zo3w9kmbLJigy991olvXOfPf5s1d1fnrwLUwAPsxidK1iCDZg/s1080/Red%20Black%20Digital%20Marketing%20Agency%20Instagram%20Post.png">
+    </a></div>
+    <!---3rd picture-->
+    <div class="col-md">
+    <h3>Click Here</h3> <!---https://ckk.ai/wheather--->
+  <a href="#">
+    <img style="width:300px; height:300px;" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh6GQKIVtE3nl2h8_JqffNIsv95eO15AUYAzJW50g65mz7OEoxe0e5RfgRjQD5ObxCmxUnRPgPIUKrKzecx8vJuXJCAIL0fA6WCtWrtk0ET3xO_9H6gSGWbZ_0Pi9eaHTBmmAziyP3qApeVqiyuJ2CE9Rk0AIuI_o5Jq4K23QzPuQtg9eAUwJquorFDlg/s1080/Brown%20Sand%20Minimalist%20Search%20Bar%20Question%20Instagram%20Post.png">
+    </a></div>
+    </div>
+ <!--Please Do not copy or reupload this anywhre --->
+    <footer>
+        <div class="row info">
+            <!-- <div class="share-line">Designed By Yaseen</div>
+            <br >
+            <div class="share-line"></div>
+            <div class="share-line"></div> -->
+            <div class="share-line">This Theme is Edited By Yaseen<br ><a style="text-decoration:none; color:rgb(5, 158, 209);" href="https://yaseenbloggporfolio.blogspot.com/2022/10/to-my-portfolio-hi-i-am-yaseen-khan.html">Checkout Developer Portfolio</a><br > Share your suggestions with me</div>
+        
+            <div>
+                <div class="icons-div">
+                    <a href="https://mail.google.com/mail/u/0/?tab=rm#inbox?compose=new" class="mail-ico"><i class="fas fa-envelope"></i></a>
+                    <a href="https://www.youtube.com/channel/UCdMdcqWlnNId6PNosRlF8qg" target="_blank" class="fb-ico"><i class="fab fa-youtube"></i></a>
+                    <!----
+                    <a href="whatsapp://send?text=Hello!&phone=+923339498360" class="wtsap-ico"><i class="fab fa-whatsapp"></i></a>
+--->
+<a href="https://wa.me/923339498360" class="wtsap-ico"><i class="fab fa-whatsapp"></i></a>
+                    <div class="question"><a href="help/index.html" target="_blank"><i class="fas fa-question-circle"></i></a></div>
+                </div>
+            </div>
+<!--Please Do not copy or reupload this anywhre --->
+        </div>
+    </footer>
+    <!---java script ---->
+    <script>
+// var id = -1;
+// var subAr = [];
+// var marksAr = [];
+// var creditAr = [];
+var id, subAr, marksAr, creditAr, GPAcount;
+/*-----------------------------/
+----- DOM strings -----
+------------------------------*/
+//<!--Please Do not copy or reupload this anywhere
+var DOMStrings = {
+    subName: '.sub-name',
+    subCredit: '.sub-credit',
+    subMar: '.sub-mar',
+    subAdd: '.sub-add'
+};
+
+/*-----------------------------/
+----- Calculator -----
+------------------------------*/
+var Calculator = function() {
+    var grade, subTime, totalcredit, totaltimecal;
+    totalcredit = 0;
+    totaltimecal = 0;
+    marksAr.forEach(function(current, index, array) {
+        if (current > 84) {
+            grade = 4.00;
+        } else if (current > 79 && current < 85) {
+            grade = 3.67;
+        } else if (current > 74 && current < 80) {
+            grade = 3.33;
+        } else if (current > 70 && current < 75) {
+            grade = 3.00;
+        } else if (current > 67 && current < 71) {
+            grade = 2.67;
+        } else if (current > 63 && current < 68) {
+            grade = 2.33;
+        } else if (current > 60 && current < 64) {
+            grade = 2.00;
+        } else if (current > 57 && current < 61) {
+            grade = 1.66;
+        } else if (current > 49 && current < 58) {
+            grade = 1.00;
+        } else {
+            grade = 0.00;
+        }
+        subTime = grade * creditAr[index];
+        totalcredit += creditAr[index];
+        totaltimecal += subTime;
+//<!--Please Do not copy or reupload this anywhre
+    });
+    totalGPA = totaltimecal / totalcredit;
+    totalGPA = totalGPA.toFixed(2);
+    if (totalGPA !== '' && !isNaN(totalGPA) && GPAcount === 0) {
+
+        showGPA();
+        document.querySelector('.total-gpa').textContent = totalGPA;
+    }
+
+    // return fun;
+};
+
+
+/*-----------------------------/
+----- Event Listners -----
+------------------------------*/
+//<!--Please Do not copy or reupload this anywhre
+var setupEventListners = function() {
+    document.querySelector(DOMStrings.subAdd).addEventListener('click', ctrlAddItem);
+    document.addEventListener('keypress', function(event) {
+        if (event.keyCode === 13 || event.which === 13) {
+            ctrlAddItem();
+        }
+    });
+    document.querySelector('.calculate-btn').addEventListener('click', Calculator);
+    document.querySelector('.reset-btn').addEventListener('click', init);
+};
+
+/*-----------------------------/
+----- Getting input values -----
+------------------------------*/
+
+var getInput = function() {
+
+    return {
+        subjectAd: document.querySelector(DOMStrings.subName).value,
+        creditAd: parseFloat(document.querySelector(DOMStrings.subCredit).value),
+        marksAd: parseFloat(document.querySelector(DOMStrings.subMar).value)
+    };
+};
+//<!--Please Do not copy or reupload this anywhre --->
+/*-----------------------------/
+----- Add items to arrays -----
+------------------------------*/
+
+var ctrlAddItem = function() {
+    var input, newItem;
+    input = getInput();
+    if (input.subjectAd !== "" && isNaN(input.subjectAd) && input.creditAd > 0 && input.marksAd >= 0) {
+        // newItem = addItem(input.subjectAd, input.creditAd, input.marksAd);
+        id += 1;
+        subAr[id] = input.subjectAd;
+        creditAr[id] = input.creditAd;
+        marksAr[id] = input.marksAd;
+        clearFields();
+        updateUI(id);
+    }
+
+}
+
+/*-----------------------------/
+----- Clear Fields -----
+------------------------------*/
+//<!--Please Do not copy or reupload this anywhre --->
+var clearFields = function() {
+    var fields, fieldsArr;
+    fields = document.querySelectorAll(DOMStrings.subName + ',' + DOMStrings.subCredit + ',' + DOMStrings.subMar);
+    fieldsArr = Array.prototype.slice.call(fields);
+    fieldsArr.forEach(function(current, index, array) {
+        current.value = "";
+    });
+    fieldsArr[0].focus();
+};
+
+/*-----------------------------/
+----- UI Update -----
+------------------------------*/
+
+//New Subject added to list
+
+var updateUI = function(ide) {
+    var html, newhtml;
+    html = '<div class="subject clearfix" id="item-%id%"> <div class = "sub-name-des">%sub%</div> <div class = "right">%marks%</div><div class = "right cred">%credit%</div></div>';
+    newhtml = html.replace('%id%', ide);
+    newhtml = newhtml.replace('%sub%', subAr[ide]);
+    marksAr[ide] < 10 ? newhtml = newhtml.replace('%marks%', '0' + marksAr[ide]) : newhtml = newhtml.replace('%marks%', marksAr[ide]);
+    newhtml = newhtml.replace('%credit%', creditAr[ide]);
+    document.querySelector('.subject-head').insertAdjacentHTML('beforeend', newhtml);
+}
+//<!--Please Do not copy or reupload this anywhre --->
+//Reset UI
+var resetUI = function() {
+    document.querySelector('.subject-head').textContent = '';
+    document.querySelector('.result-area').textContent = '';
+}
+
+// Show total GPA on UI
+
+var showGPA = function() {
+    var html, newhtml;
+    html = '<h2>YOUR GPA IS</h2><p class="total-gpa">%total-gpa%</p>';
+    document.querySelector('.result-area').insertAdjacentHTML('beforeend', html);
+    GPAcount = 1;
+}
+var init = function() {
+    setupEventListners();
+    clearFields();
+    resetUI();
+    id = -1;
+    GPAcount = 0;
+    subAr = [];
+    marksAr = [];
+    creditAr = [];
+}
+
+init();
+
+// the script from second page
+/*-----------------------------/
+----- GPA CALCULATOR -----
+------------------------------*/
+
+var Calculator = (function() {
+    //
+})();
+
+/*-----------------------------/
+----- UI CONTROLLER -----
+------------------------------*/
+
+var UIController = (function() {
+    //
+    var DOMStrings = {
+        subName: '.sub-name',
+        subCredit: '.sub-credit',
+        subMar: '.sub-mar',
+        subAdd: '.sub-add'
+    };
+
+    return {
+        getDOMStrings: function() {
+            return DOMStrings;
+        },
+        getInput: function() {
+            return {
+                subjectAd: document.querySelector(DOMStrings.subName).value,
+                creditAd: parseFloat(document.querySelector(DOMStrings.subCredit).value),
+                marksAd: parseFloat(document.querySelector(DOMStrings.subMar).value)
+            };
+
+        }
+    }
+})();
+
+/*-----------------------------/
+----- CONTROLLER -----
+------------------------------*/
+
+var Controller = (function(UICtrl, CalcCtrl) {
+    //
+    var DOM = UIController.getDOMStrings();
+    var setupEventListners = function() {
+        document.querySelector(DOM.subAdd).addEventListener('click', ctrlAddItem);
+        document.addEventListener('keypress', function(event) {
+            if (event.keyCode === 13 || event.which === 13) {
+                ctrlAddItem();
+            }
+        });
+    };
+    var ctrlAddItem = function() {
+        var input, newItem;
+        input = UICtrl.getInput();
+        if (input.subjectAd !== "" && !isNaN(input.subjectAd) && input.subjectAd > 0) {
+            newItem = Calculator.addItem(); //to be continue
+        }
+    }
+
+    return {}
+})(UIController, Calculator);
+//<!--Please Do not copy or reupload this anywhre --->
+
+
+
+
+    </script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'G-7BPNPV6D26', 'auto');
+  ga('send', 'pageview');
+  
+  setInterval(function() {
+    ga('send', 'event', 'Real-Time Users', 'Count', {'metric1': ga('get', 'activeUsers')});
+  }, 3000);
+</script>
+<!-----Google Tag Manager
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','
+GTM-NCT2QG2');</script>
+  ----->
+  
+  
+  
+</body>
+
+</html>
